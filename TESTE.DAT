@@ -1,0 +1,537 @@
+
+
+
+                                   EP.DOC
+                                 ----------
+                       The Epson (ADI) Printer Driver
+                    (EP.EXE 1.0) for AutoCAD (TM) ADI (TM)
+                      Copyright 1989,1990,1991, Autodesk, Inc.
+
+                                Revision 1.90
+                                Mar. 16, 1991
+
+/******************************************************************************
+*                                                                             *
+*               Copyright (C) 1989 - 91 by Autodesk, Inc.                     *
+*                                                                             *
+*       Permission to use, copy, modify, and distribute this software and     *
+*       its documentation for the purpose of creating applications for        *
+*       AutoCAD, is hereby granted in accordance with the terms of the        *
+*       License Agreement accompanying this product.                          *
+*                                                                             *
+*       Autodesk makes no warranties, express or implied, as to the           *
+*       correctness of this code or any derivative works which incorporate    *
+*       it.  Autodesk provides the code on an ''as-is'' basis and             *
+*       explicitly disclaims any liability, express or implied, for           *
+*       errors, omissions, and other problems in the code, including          *
+*       consequential and incidental damages.                                 *
+*                                                                             *
+*       Use, duplication, or disclosure by the U.S.  Government is            *
+*       subject to restrictions set forth in FAR 52.227-19 (Commercial        *
+*       Computer Software - Restricted Rights) and DFAR 252.227-7013 (c)      *
+*       (1) (ii) (Rights in Technical Data and Computer Software, as          *
+*       applicable.                                                           *
+*                                                                             *
+******************************************************************************/
+
+
+INTRODUCTION
+
+This document explains the installation and use of EP.EXE ver
+1.0, an Autodesk Device Interface (ADI) driver designed to run
+with Epson 24 pin printers in conjunction with AutoCAD and
+AutoSketch.  This driver was developed by Autodesk, Inc.  and
+does not represent an endorsement of any particular product,
+including any of the Epson printers.
+     
+Autodesk, Inc.  makes no warranty, either expressed or implied,
+including but not limited to any implied warranties of
+merchantability or fitness for a particular purpose, regarding
+these materials and makes such materials available on an "as-is"
+basis.
+
+
+HARDWARE REQUIREMENTS
+
+The hardware requirements specific to using the EP printer ADI
+driver with AutoCAD and AutoSketch.
+
+   o This driver is suitable for use with all 24 pin Epson
+     printers in the "LQ" series, but some printers can't use all
+     of the options provided by the driver.  For example, a
+     narrow carriage printer can't handle wide plots and some
+     models can't print in color.  Please refer to your Epson
+     user's manual for details.
+
+   o A parallel card and cable is required as described in the
+     AutoCAD Installation & Performance Guide.
+
+   o Serial output is not supported because the time required to
+     plot would be unacceptably long.
+
+
+HARDWARE INSTALLATION
+
+The Epson printer must be connected to the computer with a
+standard Centronics-type parallel cable.  Chapter 8 of the
+AutoCAD Installation & Performance Guide contains all the
+information regarding pin connections and switch settings.
+
+
+COPYING THE DRIVER SOFTWARE
+
+The Epson printer ADI driver for AutoCAD and AutoSketch comes on the
+ADI Drivers update diskette.  The disk also contains a file EP.HLP for
+on-line command line options.  You will probably want to install the
+driver in the same directory as AutoCAD.  Here's how to copy the driver
+software onto your hard disk.  The example assumes an AutoCAD directory
+is on drive C and is named \ACAD and the ADI driver update disk is in
+drive A:
+
+1. Change to the directory where you store AutoCAD:
+
+    C:> CD ACAD [Return]
+
+2.  Insert the ADI driver update diskette in drive A.
+
+3. Copy the driver files to your hard disk:
+
+    C:> COPY A:\EP\EP*.*  [Return]
+
+
+INSTALLING THE ADI EP DRIVER
+
+The AutoCAD Epson printer ADI driver must be installed (loaded
+into memory) prior to entering AutoCAD.  It is a "terminate and
+stay resident" (TSR) software program which can use up to 77K of
+RAM depending on how it is configured.  Once loaded, it remains
+in memory until you turn off or reboot your computer. 
+
+** Note: Each time you type in the command EP (except for the
+special case of the "F" option for plotting binary files),
+another copy of the driver software is loaded into memory, using
+up to 77k more bytes of RAM.  You need to "reboot" the system (to
+clear out the any copies of EP.EXE).
+
+
+To install the driver:
+
+    C:> EP [Return]
+
+The Epson ADI driver will then be installed with the following
+defaults:
+
+    o  Interrupt 7b(hex)
+    o  Monochrome
+    o  180 x 180 Dots per inch print density
+    o  8" Paper width
+    o  AutoSketch is off
+    o  Output directly to printer
+    o  Input from AutoCAD
+    o  form feed after every plot
+
+
+To change this setup, you can choose to include one or more
+options on the command line.  These options are:
+
+-lx parallel port x
+-f plot from a file     -v interrupt #      -c color      -p no form feed
+-o plot to a file       -w wide paper       -8 8 pins     -dx density x                         
+
+
+
+To install the driver to do color printer plots (if your Epson is
+color capable and you have the color ribbon installed):
+
+    C:> EP -C  [Return]
+        (default is monochrome)
+
+To set the horizontal plot density
+
+    C:> EP -Dx [Return]  (where x is 1 to 6 in the following table):
+        (default is 180 x 180)
+
+                        x     Horizontal   Vertical
+                                Density    Density
+                        1         60         180
+                        2         90         180
+                        3         120        180
+                        4         180        180
+                        5*        360        180
+                        6**       360        360
+
+*Note: Option -D5, when combined with the color option, -C, is limited
+to plots less than 11.3 inches in width, when plotting from AutoCAD 386.
+
+**Note: Option -D6 is not available as a installed TSR in color
+mode.
+
+You can also install the driver to write plot files directly to
+your disk drive for later printing (this will create a file named
+'fname' on your default drive for later printing).  This is
+useful for printing multiple copies of a plot.  See the section
+titled "OUTPUTTING EPSON PRINTER FILES FOR DIRECT PRINTING FROM
+DISK" for more details:
+
+    C:> EP -Ofname [Return]
+
+
+You can use the driver to read AutoCAD Binary printer plot files
+directly from your disk drive.  This allows you to use plotting
+modes which would use too much memory for plotting from AutoCAD
+as a TSR.  This option does not install the driver as a TSR, and
+may be used repeatedly.  See the section titled "USE AS A
+POSTPROCESSOR" for more details:
+
+    C:> EP -Ffname [Return]
+
+Note:  These filenames must conform to DOS standards.
+
+To install the driver for printing on wide paper (will create a
+plot up to 13.6" wide):
+
+    C:> EP -W [Return]
+        (default is 8")
+
+
+To install the driver to only use 8 pins of the print head (will
+require much less the RAM for the TSR, but will print more
+slowly):
+
+    C:> EP -8 [Return]
+        (default is the 24 pins)
+
+
+
+To install the driver to use a different parallel port:
+
+    C:> EP -Lx [Return] (where x is the new port assignment 1, 2 or 3)
+        (default is LPT1)
+
+
+To install the driver to work with AutoSketch (if you use
+AutoSketch and don't use this option, messages will be written on
+the screen over your drawing):
+
+    C:> EP -S [Return]
+        (default writes messages to the screen)
+
+
+To install the driver to not send a form feed after each plot:
+
+    C:> EP -P [Return]
+        (default is a form feed after every plot) 
+
+
+To install the driver for a different interrupt vector (default
+is 7B hex):
+
+    C:> EP -Vxx [Return]  (where xx is the new interrupt number)
+
+
+To display a list of these options:
+
+    C:> EP -H or -? [Return]  Prints a help message from ep.hlp
+
+
+To install the driver using a combination of the above options:
+
+
+    C:> EP -Oplotdata.plt -c -v7b -8   This will do the following:
+
+         1.  Create a plot file 'plotdata.plt' of your drawing on your
+             default drive for plotting at a later time.
+         2.  Make a color print of the plot.
+         3.  The interrupt vector will be 78 (in hex).
+         4.  Will only use 8 pins.
+
+
+MEMORY REQUIREMENTS FOR DIFFERENT CONFIGURATIONS
+
+RAM Memory required by driver (8" wide plot)
+    n   density                Black & White     Color
+-----------------------------------------------------------
+        X  x  Y
+    1 = 60 x 180  dpi              19k             27k
+    2 = 90 x 180  dpi              20k             26k
+    3 = 120 x 180 dpi              20k             29k
+    4 = 180 x 180 dpi (default)    22k             35k
+    5 = 360 x 180 dpi              26k             52k
+    6 = 360 x 360 dpi              35k             n/a
+
+
+
+RAM memory required for wide carriage   (13.6" wide plot)
+    n   density                 Black & White     Color 
+-----------------------------------------------------------
+        X  x  Y 
+    1 = 60 x 180  dpi               20k            28k  
+    2 = 90 x 180  dpi               21k            33k  
+    3 = 120 x 180 dpi               22k            38k  
+    4 = 180 x 180 dpi (default)     25k            48k  
+    5 = 360 x 180 dpi               32k            78k  
+    6 = 360 x 360 dpi               47k            n/a
+
+** Note: There are only 2 densities in the vertical direction.
+If you do not have both AutoCAD and this driver configured for the
+same dots per inch, your drawing may be expanded or compressed in
+the y-axis.
+
+CONFIGURING AUTOCAD FOR THE EPSON 24 PIN PRINTER DRIVER It is
+necessary to reconfigure AutoCAD for an installed ADI printer
+plotter driver.  You will only need to do this before you want to
+use the EP ADI driver for the first time, or when you change the
+paper width or the horizontal or the vertical plot densities of
+your Epson ADI.  Note the present configuration of EP.EXE when
+you install it.  AutoCAD's printer plotter configuration
+densities must be equal for your plots to be correct.
+Reconfigure AutoCAD for an installed printer plotter ADI driver <2>.
+Be sure that you:
+
+    1.  Select output format as an Installed ADI driver <2>.
+
+    2.  Set the maximum horizontal (X) plot size in inches.
+        These values are 7.99" for the standard size or 13.59"
+        for the wide carriage printers.  The vertical (Y) axis
+        should be set to your paper size, 10.5 is a good value.
+
+    3.  Set the density equal to the installed density of the
+        driver EP.EXE.  If AutoCAD's density (dots/inch) is
+        greater, your drawing will be expanded along that axis
+        and may be clipped.  If the drivers density is greater,
+        your drawing will be compressed along that axis.
+        
+    4.  The vertical or y-axis has only 2 densities, 180
+        dots/inch and 360 dpi.  For most printer plotting, 180
+        dpi should be fine.
+
+See the Chapter 8, the printer configuration section of the
+Installation & Performance Guide to AutoCAD, Chapter 13 of your
+main Reference Manual for AutoCAD details, and your EP Users
+guide for printer details.
+
+AutoCAD will now be configured to do a printer plot using the
+installed EP ADI driver.
+
+
+
+CREATING PRINTER PLOTS WITH THE EPSON 24 PIN PRINTER DRIVER
+
+
+To send plots to the Epson printer from AutoCAD's drawing editor
+select Plot then Printer from the AutoCAD menu or type 'prplot'
+at the command line.  From AutoCAD's Main Menu select Printer
+Plot <4>.  Make sure your printer is connected, turned on and on
+line and hit return when ready.  Your plot will be produced on
+your Epson 24 pin printer.
+
+** Note: printer plots take a long time to produce, so don't worry if
+nothing happens for a while.  They can take a very long time depending
+on the complexity of the drawing, if you chose color or if the plot
+density is high.
+
+
+OUTPUTTING EPSON PRINTER FILES FOR DIRECT PRINTING FROM DISK
+
+
+You may wish to create a file that may be printed multiple times
+directly from disk.  You can do this with the DOS copy command
+without running AutoCAD or EP driver after the file is created.
+
+CAUTION: This option should be used with care.  It is possible to
+create a file larger than 8 Megabytes if all the settings are at
+their maximum.  If it is used with some thought it will produce
+good results.
+
+Here is an example:
+
+Say you want to produce a 360 x 180 dpi color plot of the
+site-3d.dwg on 13.59" wide paper.
+
+Install the EP ADI printer driver by typing:
+
+    C:> EP -d5 -Osite-3d.epo -C -W [Return]
+
+
+Configure AutoCAD as a ADI printer at 360 x 180 dpi, and a
+horizontal width of 13.59".  Run AutoCAD and printer plot the
+site-3d.dwg file.  The file site-3d.epo will be created on the
+default disk for later printing from the command line.
+
+Note that the combination of -W, -C and -d5 won't allow you to plot
+beyond 11.3" width with AutoCAD 386, so you'll need to lower the
+plot width if you use AutoCAD 386.
+
+AutoCAD 386 places a limitation on real mode ADI printer plotter
+drivers such as this one. A maximum of 4096 color pixels can
+be printed in the X direction. If you configure this driver
+for TSR operation, color, density 5 (180x360dpi) and wide
+paper, you must limit the width of the plot to less than 11.3".
+This limitation is not necessary with 640k DOS AutoCAD.
+
+
+You can print the file from the DOS command line by typing:
+
+    C:> COPY SITE-3D.EPS PRN /B [Return]
+
+In the above example, if you plotted the <E>xtents it would
+create a file of 3 Megabytes and would take over an hour to be
+produced on a IBM system 30.  But if you created a file of the
+<D>isplay at 180 x 180 dpi for 7.99" wide paper by typing the
+following:
+
+        
+     C:> EP -C -Osite-3d.epo    
+
+the file site-3d.epo would be only .3 Megabytes.  The creation
+time for this file is only 5 minutes on an AT clone running at 10
+Mhz.
+
+
+USE AS A POSTPROCESSOR
+
+The ADI driver EP.EXE can work as a postprocessor, reading
+AutoCAD ADI binary files from your disk and sending them directly
+to the printer.  Printer plot to an ADI binary printer file from
+AutoCAD or AutoSketch 2.0.  Then, when the Autodesk product is no
+longer running, you may use EP.EXE to plot from the binary file
+to your Epson printer.
+
+Here's an example:
+
+You want to produce a 360x360 dpi color plot of site-3d.dwg on
+13.59" wide paper.  First you run AutoCAD's configuration program
+to select the ADI Printer, plot to binary file, 360x360 dots per
+inch, and 13.6" horizontal paper width.  Use the PRPLOT command
+in AutoCAD.  This produces a binary printer plot file called
+"site-3d.prp".  Next, exit AutoCAD and plot the drawing by
+invoking:
+
+    EP -Fsite-3d.prp -C -D6 -W
+
+This will cause EP.EXE to make a plot of the contents of the file
+"site-3d.prp" in color at 360 x 360 dpi on wide paper.  When the
+plot is done, EP.EXE will vanish from memory (it does not install
+itself as it would if you wanted to plot directly from AutoCAD).
+
+**Note: If you added -Osite-3d.epo to the above command line,
+the data wouldn't be sent to the printer but a file named
+site-3d.epo would be created.  See the above section titled
+"OUTPUTTING EPSON PRINTER FILES FOR DIRECT PRINTING FROM DISK"
+for details.
+
+AutoSketch 2.0 or later supports this feature.  Earlier versions did not
+create binary plot files.
+
+
+USE WITH AUTOSKETCH
+
+The ADI EP driver may be used with AutoSketch.  Just remember to
+use the -S flag on the control line.  Failure to do this will
+cause driver messages to printed on the AutoSketch screen,
+overwriting the drawing displayed there.
+
+The EP.EXE drivers dated after 2/4/90 work with 8088 class machines.
+Previously it would hang the computer.
+
+Before you install this driver for AutoSketch, make sure that
+your Epson printer is turned on and on-line.  If it is not the
+driver will not be installed and an error message will appear
+telling you that it wasn't installed.
+
+Before every plot from AutoSketch using this ADI driver, you must
+make sure that the printer is turned on, connected and on line.
+Failure to do this will return you to the drawing screen with out
+any error messages.  If the printer goes off-line, runs out of
+paper or becomes disconnected at any time during the plot, no
+more data will be sent to the printer and you will be returned to
+the drawing screen again without any error messages.  Therefore
+if your drawing is not being plotted at all or stops plotting and
+you are returned to the drawing editor, make sure the printer has
+paper, is turned on, connected and on line.
+
+AutoSketch must be reconfigured so that it knows you will be
+using an ADI driver to do printer plots.  To initiate
+AutoSketch's reconfiguration, type:
+
+     C:>SKETCH /R [Return]
+
+or if you're installing AutoSketch for the first time, type:
+
+     C:>SKETCH [Return]
+
+Configure AutoSketch's plotter as an Autodesk Device Interface
+Printer <3>.  AutoSketch will prompt you for more information
+regarding this ADI driver.  See the section titled 'CONFIGURING
+AUTOCAD FOR THE EPSON 24 PIN PRINTER DRIVER' and Appendix B: the
+ADI Plotter section in the AutoSketch Users Guide.
+
+AutoSketch prompts you to indicate how your plotter is connected
+to your computer, choose:
+
+     2.  Parallel port, system printer, or hardware handshake
+         serial port
+
+Then follow the instructions in Configuring AutoSketch in Chapter
+2 of the AutoSketch Users Guide.  Remember this ADI driver can
+only be used as a parallel device.
+
+**Note: When you open the plot area dialogue box, the values for
+x and y may be incorrect.  Set them now, to the size of the paper
+you have in your printer.  Rotating the plot may also work.
+
+
+
+NOTES ON OPERATION:  AutoCAD TIPS AND HINTS for the EP ADI Driver
+
+1.  If you will use the EP ADI driver with every session of
+    AutoCAD, you may want to place the EP.EXE command in your
+    AUTOEXEC.BAT file with the correct options set, because you
+    must install the Printer driver after every reset of your
+    system. 
+
+2.  The Printer must be connected, turned on, and on line before
+    you plot a file using the EP ADI driver.
+
+3.  Do not turn the Printer on and off in the middle of a
+    plotting session.  An error message will be displayed if you
+    try to use the ADI EP driver while the Printer is turned off.
+
+4.  If you're using the tractor feed, make sure you've advanced
+    the paper far enough for the paper bail contact the platen.
+
+5.  Only Colors numbered 1 through 7 are printed, colors 8 to 15
+    are converted to black (#7), so, don't use colors numbered
+    greater than seven.  
+
+6.  If you are using this ADI driver with AutoSketch in a color
+    mode make sure that you configure EACH AutoSketch drawing's
+    Pen Info for the different colors.  If you don't it will
+    default to red and your entire drawing will be in red.
+
+7.  You will find that high density and/or color plots take much
+    longer to complete than low density and/or monochrome plots.
+
+8.  The 360x360 dot per inch density can be used with all LQ2550
+    and LQ950 models.  Recent LQ850 and LQ1050 printers can also
+    handle this high density mode.  Older LQ850 and LQ1050
+    printers will need a firmware (ROM) upgrade to handle 360x360
+    dpi.  You can tell if your printer can plot 360x360 dpi by
+    running self-test and checking the ROM revision number.  You
+    need a number starting with N9.
+
+9.  Note that the different density options use different amounts
+    of memory in your computer.  High density plots need a lot of
+    memory.  They also take a long time to complete!  Color adds
+    greatly to the memory and time requirements.  Memory used up
+    by drivers is subtracted from the memory your drawings need
+    when you run AutoSketch.  AutoCAD doesn't have that problem,
+    but there still is limited memory available for use by
+    drivers.  The highest density color modes use so much memory
+    that it isn't possible to plot directly from AutoCAD (much
+    less AutoSketch), so this driver offers an optional file
+    input mode.
+
+AutoCAD and ADI are registered trademarks of Autodesk, Inc.  IBM,
+PC, XT, AT are trademarks of International Business Machines
+Corporation.  Epson is a trademark of Epson Corporation.
