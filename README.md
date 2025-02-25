@@ -21,7 +21,7 @@ CURIOSIDADES:
 
 - Podemos observar no cabeçalho: Copyright (C) 1993, TML (Turma Muito Louca) Software Inc. All Right Reserved.
 
-- Em Agosto/2000, abri a minha empresa de Engenharia e Tecnologia, TLMV Consultoria LTDA - CNPJ: 03.999.590/0001-04, localizada em Magé - RJ - Brasil.
+- Em Agosto/2000, abri a minha empresa de Engenharia e Tecnologia, TML Consultoria LTDA - CNPJ: 03.999.590/0001-04, localizada em Magé - RJ - Brasil.
 
 - Em Fevereiro/2012, efetuei a transferência da empresa para o Rio de Janeiro - RJ - Brasil, e a razão social foi alterada para TLMV (Tecnologia Luiz Marcio Viana) Consultoria e Sistemas EIRELI - CNPJ: 03.999.590/0001-04 (YouTube: https://www.youtube.com/@tlmv6436).
 
